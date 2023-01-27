@@ -10,5 +10,8 @@
     
     
     <color name="toolbar_color_control_normal">#000000</color> <!--black-->
-
+    <color name="primary_green">#7ADB83</color>
+    <color name="primary_orange">#F89406</color>
+    <color name="primary_text_grey">#7C7C7C</color>
+    <color name="accent_grey">#D4DEE7</color>
 </resources>
