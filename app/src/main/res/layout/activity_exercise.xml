@@ -20,21 +20,21 @@
     <!-- more powerful than an action bar-->
 
     <TextView
-        android:id="@+id/tvGetReady"
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="GET READY FOR"
+        android:text="TAKE A REST"
         android:textAlignment="center"
         android:textSize="@dimen/default_button_text_size"
         android:textStyle="bold"
         android:textColor="@color/primary_green"
-        app:layout_constraintBottom_toTopOf="@+id/flProgressBar"
+        app:layout_constraintBottom_toTopOf="@+id/flRestView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="GET READY FOR TOOL" />
 
     <FrameLayout
-        android:id="@+id/flProgressBar"
+        android:id="@+id/flRestView"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_margin="12dp"
@@ -46,7 +46,55 @@
         >
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progressBarRest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:background="@drawable/circular_progress_bar_gray"
+            android:layout_gravity="center"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circular_progress_bar_orange"
+            android:max="10"
+            android:progress="10"
+            android:rotation="-90"
+            />
+
+        <LinearLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/item_circular_color_accent_background">
+            <TextView
+                android:id="@+id/tvRestTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="@dimen/default_button_text_size"
+                android:textStyle="bold"
+                android:textColor="?attr/colorOnPrimary"
+                tools:text="10"
+                />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/flExerciseView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_margin="12dp"
+        android:background="@drawable/item_circular_color_accent_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tbExercise"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"
+        >
+
+        <ProgressBar
+            android:id="@+id/progressBarExercise"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             style="?android:attr/progressBarStyleHorizontal"
@@ -66,7 +114,7 @@
             android:gravity="center"
             android:background="@drawable/item_circular_color_accent_background">
             <TextView
-                android:id="@+id/tvTimer"
+                android:id="@+id/tvExerciseTimer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
