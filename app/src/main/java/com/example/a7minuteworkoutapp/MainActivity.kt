@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 //        val flStart : FrameLayout = findViewById(R.id.flStart) use view binding instead
 
         binding?.flStart?.setOnClickListener{
-            Toast.makeText(this, "Start!", Toast.LENGTH_SHORT).show()
+//            Toast.makeText(this, "Start!", Toast.LENGTH_SHORT).show()
             val exerciseIntent = Intent(this, ExerciseActivity::class.java)
             startActivity(exerciseIntent)
 //            finish() // go back to main activity
