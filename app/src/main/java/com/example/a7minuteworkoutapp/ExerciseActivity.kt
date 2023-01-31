@@ -1,6 +1,5 @@
 package com.example.a7minuteworkoutapp
 
-import android.content.Intent
 import android.media.MediaPlayer
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
@@ -14,19 +13,22 @@ import kotlin.collections.ArrayList
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var binding:ActivityExerciseBinding? = null
     private var tts: TextToSpeech? = null
-    private var check_tts = 0
     private var ttsIsInit = false
-    private var player: MediaPlayer? = null
+    private var lowBeepPlayer: MediaPlayer? = null
+    private var highBeepPlayer: MediaPlayer? = null
+
+
+
     // rest timer
     private var restTimer: CountDownTimer? = null
-    private var restDuration: Long = 5000
+    private var restDuration: Long = 10000
     private var restPauseOffset: Long = 0
     private var restProgress = (restDuration/1000).toInt()
     private var restMaxProgress = (restDuration/1000).toInt()
 
     //exercise timer
     private var exerciseTimer: CountDownTimer? = null
-    private var exerciseDuration: Long = 5000
+    private var exerciseDuration: Long = 10000
     private var exercisePauseOffset : Long = 0
     private var exerciseProgress = (exerciseDuration/1000).toInt()
     private var exerciseMaxProgress = (exerciseDuration/1000).toInt()
@@ -48,24 +50,22 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding?.tbExercise?.setNavigationOnClickListener {
             onBackPressed() // clicking back button on device
         }
+        try {
+            lowBeepPlayer = MediaPlayer.create(this, R.raw.low_beep_sound)
+            highBeepPlayer = MediaPlayer.create(this, R.raw.high_beep_sound)
+            lowBeepPlayer?.isLooping = false
+            highBeepPlayer?.isLooping = false
+        } catch(e : Exception) {
+            Toast.makeText(this, "media player error", Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
-            setRestTimer()
-            Toast.makeText(this, "starting workout", Toast.LENGTH_SHORT).show()
-        }, 500)
+            setRestTimer() // TODO: add progress bar
+//            Toast.makeText(this, "starting workout", Toast.LENGTH_SHORT).show()
+        }, 1000)
     }
     private fun setRestTimer() {
-
-//        try {
-//            val soundURI = Uri.parse("android.resource://com.example.a7minuteworkoutapp"+R.raw.press_start)
-//            player = MediaPlayer.create(this, soundURI)
-//            player?.isLooping = false
-//            player?.start()
-//
-//        } catch(e : Exception) {
-//            Toast.makeText(this, "media player error", Toast.LENGTH_SHORT).show()
-//            e.printStackTrace()
-//        }
 
         binding?.tvNextExercise?.text = workoutList[exerciseIndex].name
         binding?.tvExercise?.visibility = View.INVISIBLE
@@ -77,6 +77,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         binding?.tvRest?.visibility = View.VISIBLE
         binding?.flRestView?.visibility = View.VISIBLE
 
+//        player?.start()
         speakOut("Get ready for next exercise: ${workoutList[exerciseIndex].name}")
 
         resetRestTimer()
@@ -98,8 +99,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         restTimer = object : CountDownTimer(restDuration - restPauseOffset, 1000) {
             override fun onTick(timeLeftinMillis: Long) {
                 restPauseOffset = restDuration - timeLeftinMillis
-                binding?.tvRestTimer?.text = "${timeLeftinMillis/1000}"
                 binding?.progressBarRest?.progress = --restProgress
+                if (restProgress in 1..3)
+                    lowBeepPlayer?.start()
+                else if (restProgress == 0)
+                    highBeepPlayer?.start()
+                binding?.tvRestTimer?.text = "$restProgress"
             }
             override fun onFinish() {
                 setExerciseTimer()
@@ -109,7 +114,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     }
 
     private fun setExerciseTimer(){
-
 
         binding?.tvExercise?.text = workoutList[exerciseIndex].name
         binding?.tvRest?.visibility = View.INVISIBLE
@@ -143,8 +147,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         exerciseTimer = object : CountDownTimer(exerciseDuration - exercisePauseOffset, 1000) {
             override fun onTick(timeLeftInMillis: Long) {
                 exercisePauseOffset = exerciseDuration - timeLeftInMillis
-                binding?.tvExerciseTimer?.text = "${timeLeftInMillis/1000}"
                 binding?.progressBarExercise?.progress = --exerciseProgress
+                if (exerciseProgress in 1..3)
+                    lowBeepPlayer?.start()
+                else if (exerciseProgress == 0)
+                    highBeepPlayer?.start()
+                binding?.tvExerciseTimer?.text = "$exerciseProgress"
             }
             override fun onFinish() {
                 if (exerciseIndex+1 < workoutList.size){
@@ -185,10 +193,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         }
         tts?.shutdown()
 
-        if (player != null) {
-            player?.stop()
+        if (lowBeepPlayer != null) {
+            lowBeepPlayer?.stop()
         }
-        player?.release()
+        lowBeepPlayer?.release()
         binding = null
     }
 }
