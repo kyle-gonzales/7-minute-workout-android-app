@@ -1,12 +1,15 @@
 package com.example.a7minuteworkoutapp
 
+import android.annotation.SuppressLint
 import android.media.MediaPlayer
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minuteworkoutapp.databinding.ActivityExerciseBinding
+import com.example.a7minuteworkoutapp.databinding.RecyclerviewExerciseBinding
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -17,18 +20,16 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var lowBeepPlayer: MediaPlayer? = null
     private var highBeepPlayer: MediaPlayer? = null
 
-
-
     // rest timer
     private var restTimer: CountDownTimer? = null
-    private var restDuration: Long = 10000
+    private var restDuration: Long = 1000
     private var restPauseOffset: Long = 0
     private var restProgress = (restDuration/1000).toInt()
     private var restMaxProgress = (restDuration/1000).toInt()
 
     //exercise timer
     private var exerciseTimer: CountDownTimer? = null
-    private var exerciseDuration: Long = 10000
+    private var exerciseDuration: Long = 1000
     private var exercisePauseOffset : Long = 0
     private var exerciseProgress = (exerciseDuration/1000).toInt()
     private var exerciseMaxProgress = (exerciseDuration/1000).toInt()
@@ -37,11 +38,19 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var workoutList : ArrayList<Exercise> = Constants.getDefaultWorkout()
     private var exerciseIndex : Int = 0
 
+    //recyclerView
+    private var exerciseAdapter : ExerciseAdapter? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityExerciseBinding.inflate(layoutInflater)
         setContentView(binding?.root)
         tts = TextToSpeech(this@ExerciseActivity, this@ExerciseActivity)
+
+        // initializing the recycler view
+        exerciseAdapter = ExerciseAdapter(workoutList)
+        binding?.rvExercise?.adapter = exerciseAdapter
+        binding?.rvExercise?.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         // create action bar
         setSupportActionBar(binding?.tbExercise)
         if(supportActionBar != null) {
@@ -60,13 +69,13 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             e.printStackTrace()
         }
 
+
         Handler(Looper.getMainLooper()).postDelayed({
             setRestTimer() // TODO: add progress bar
 //            Toast.makeText(this, "starting workout", Toast.LENGTH_SHORT).show()
         }, 1000)
     }
     private fun setRestTimer() {
-
         binding?.tvNextExercise?.text = workoutList[exerciseIndex].name
         binding?.tvExercise?.visibility = View.INVISIBLE
         binding?.flExerciseView?.visibility = View.INVISIBLE
@@ -106,7 +115,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     highBeepPlayer?.start()
                 binding?.tvRestTimer?.text = "$restProgress"
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun onFinish() {
+                workoutList[exerciseIndex].isSelected = true
+                exerciseAdapter?.notifyDataSetChanged() //
                 setExerciseTimer()
             }
         }
@@ -154,7 +166,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     highBeepPlayer?.start()
                 binding?.tvExerciseTimer?.text = "$exerciseProgress"
             }
+            @SuppressLint("NotifyDataSetChanged")
             override fun onFinish() {
+
+                workoutList[exerciseIndex].isSelected = false
+                workoutList[exerciseIndex].isCompleted = true
+                exerciseAdapter?.notifyDataSetChanged()
                 if (exerciseIndex+1 < workoutList.size){
                     exerciseIndex++
                     setRestTimer()

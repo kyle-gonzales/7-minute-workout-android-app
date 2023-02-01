@@ -4,5 +4,6 @@
     <dimen name= "main_screen_main_layout_padding">8dp</dimen>
     <dimen name="default_button_text_size">24sp</dimen>
     <dimen name="accent_text_size">18sp</dimen>
+    <dimen name="rv_text_size">14sp</dimen>
 
 </resources>
