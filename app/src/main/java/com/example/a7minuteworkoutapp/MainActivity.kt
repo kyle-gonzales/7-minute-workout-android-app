@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 //            Toast.makeText(this, "Start!", Toast.LENGTH_SHORT).show()
             val exerciseIntent = Intent(this, ExerciseActivity::class.java)
             startActivity(exerciseIntent)
-//            finish() // go back to main activity
+//            finish() // leave main activity on the activity stack
         }
     }
 

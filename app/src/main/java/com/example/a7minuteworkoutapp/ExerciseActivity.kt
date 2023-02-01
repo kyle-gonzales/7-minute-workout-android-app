@@ -1,6 +1,7 @@
 package com.example.a7minuteworkoutapp
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.media.MediaPlayer
 import android.os.*
 import androidx.appcompat.app.AppCompatActivity
@@ -22,14 +23,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     // rest timer
     private var restTimer: CountDownTimer? = null
-    private var restDuration: Long = 1000
+    private var restDuration: Long = 10000
     private var restPauseOffset: Long = 0
     private var restProgress = (restDuration/1000).toInt()
     private var restMaxProgress = (restDuration/1000).toInt()
 
     //exercise timer
     private var exerciseTimer: CountDownTimer? = null
-    private var exerciseDuration: Long = 1000
+    private var exerciseDuration: Long = 30000
     private var exercisePauseOffset : Long = 0
     private var exerciseProgress = (exerciseDuration/1000).toInt()
     private var exerciseMaxProgress = (exerciseDuration/1000).toInt()
@@ -176,7 +177,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     exerciseIndex++
                     setRestTimer()
                 } else {
-                    Toast.makeText(this@ExerciseActivity, "workout finished", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this@ExerciseActivity, "workout finished", Toast.LENGTH_SHORT).show()
+                    finish() // pop the exercise activity from the activity stack
+                    val finishIntent = Intent(this@ExerciseActivity, FinishActivity::class.java)
+                    startActivity(finishIntent) // push the finish activity on the activity stack
                 }
             }
         }
