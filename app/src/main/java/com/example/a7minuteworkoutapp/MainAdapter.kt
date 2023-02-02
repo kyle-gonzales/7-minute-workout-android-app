@@ -1,7 +1,6 @@
 package com.example.a7minuteworkoutapp
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat

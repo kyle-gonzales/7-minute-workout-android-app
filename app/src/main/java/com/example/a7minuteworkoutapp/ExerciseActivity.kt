@@ -8,11 +8,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.speech.tts.TextToSpeech
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a7minuteworkoutapp.databinding.ActivityExerciseBinding
 import com.example.a7minuteworkoutapp.databinding.RecyclerviewExerciseBinding
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private var binding:ActivityExerciseBinding? = null
@@ -58,7 +60,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
         }
         binding?.tbExercise?.setNavigationOnClickListener {
-            onBackPressed() // clicking back button on device
+            onBackPressed()
+//            showRationalDialog("Stop Workout?", "Are you sure you want to stop your current workout?")
+//            onBackPressedDispatcher.onBackPressed()
         }
         try {
             lowBeepPlayer = MediaPlayer.create(this, R.raw.low_beep_sound)
@@ -75,6 +79,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             setRestTimer() // TODO: add progress bar
 //            Toast.makeText(this, "starting workout", Toast.LENGTH_SHORT).show()
         }, 1000)
+    }
+
+    override fun onBackPressed() {
+        showRationalDialog("Stop Workout?", "Are you sure you want to stop your current workout?")
     }
     private fun setRestTimer() {
         binding?.tvNextExercise?.text = workoutList[exerciseIndex].name
@@ -106,7 +114,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun startRestProgress(offset: Long) {
         binding?.progressBarRest?.max = restMaxProgress
         restProgress = (restDuration/1000).toInt()
-        restTimer = object : CountDownTimer(restDuration - restPauseOffset, 1000) {
+        restTimer = object : CountDownTimer(restDuration - offset, 1000) {
             override fun onTick(timeLeftinMillis: Long) {
                 restPauseOffset = restDuration - timeLeftinMillis
                 binding?.progressBarRest?.progress = --restProgress
@@ -157,7 +165,7 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
     private fun startExerciseProgress(offset : Long) {
         binding?.progressBarExercise?.max = exerciseMaxProgress
         exerciseProgress = (exerciseDuration/1000).toInt()
-        exerciseTimer = object : CountDownTimer(exerciseDuration - exercisePauseOffset, 1000) {
+        exerciseTimer = object : CountDownTimer(exerciseDuration - offset, 1000) {
             override fun onTick(timeLeftInMillis: Long) {
                 exercisePauseOffset = exerciseDuration - timeLeftInMillis
                 binding?.progressBarExercise?.progress = --exerciseProgress
@@ -204,6 +212,28 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             Toast.makeText(this, "TTS init too slow", Toast.LENGTH_SHORT).show()
 
     }
+
+    private fun showRationalDialog(title: String, message: String) {
+        val builder = AlertDialog.Builder(this@ExerciseActivity)
+        builder.setTitle(title)
+        builder.setMessage(message)
+
+        builder.setPositiveButton("Stop Workout") {
+            dialog, _ ->
+            finish()
+            dialog.dismiss()
+        }
+
+        builder.setNegativeButton("Continue Workout") {
+            dialog, _ ->
+            dialog.dismiss()
+        }
+
+        val alertDialog = builder.create()
+        alertDialog.setCancelable(true)
+        alertDialog.show()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
