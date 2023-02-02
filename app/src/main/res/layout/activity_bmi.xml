@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BmiActivity"
+    android:layout_margin="@dimen/activity_margin"
+    >
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:theme = "@style/ToolbarTheme"
+        android:background="@color/white"
+        app:titleTextColor="@color/primary_text_grey"
+        app:title="BMI Calculator"
+        />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_below="@id/toolbar"
+        android:layout_marginBottom="@dimen/activity_margin"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Weight (kg)"
+            android:inputType="numberDecimal"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilHeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_below="@id/tilWeight"
+        android:layout_marginBottom="24dp"
+        >
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Height (cm)"
+            android:inputType="numberDecimal"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llBmiResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tilHeight"
+        android:visibility="invisible"
+        tools:visibility="visible"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your BMI"
+            android:textColor="@color/primary_text_grey"
+            android:textSize="@dimen/accent_text_size"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:id="@+id/tvBmi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text_grey"
+            android:textSize="@dimen/default_button_text_size"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:id="@+id/tvDiagnosis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text_grey"
+            android:textSize="@dimen/accent_text_size"
+            android:layout_marginBottom="8dp"
+            />
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_text_grey"
+            android:textSize="@dimen/accent_text_size"
+            android:textAlignment="center"
+            android:layout_marginBottom="8dp"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCalculate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llBmiResult"
+        android:text="Calculate"
+        android:textSize="@dimen/accent_text_size"
+        android:textColor="@color/white"
+        android:layout_marginTop="12dp"
+        />
+
+
+</RelativeLayout>

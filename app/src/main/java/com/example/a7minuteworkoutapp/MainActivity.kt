@@ -24,6 +24,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(exerciseIntent)
 //            finish() // leave main activity on the activity stack
         }
+
+        binding?.flBmi?.setOnClickListener {
+            val bmiIntent = Intent(this, BmiActivity::class.java)
+            startActivity(bmiIntent)
+        }
     }
 
     override fun onDestroy() {
