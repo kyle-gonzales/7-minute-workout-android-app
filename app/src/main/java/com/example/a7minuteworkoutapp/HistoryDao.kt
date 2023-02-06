@@ -19,6 +19,6 @@ interface HistoryDao {
     @Query(value = "SELECT * FROM `history`")
     fun getAllHistories() : Flow<List<HistoryEntity>>
 
-    @Query(value = "SELECT * FROM `history` WHERE id =:id")
-    fun getHistoryById() : Flow<HistoryEntity>
+//    @Query(value = "SELECT * FROM `history` WHERE id =:id")
+//    fun getHistoryById() : Flow<HistoryEntity>
 }

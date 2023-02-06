@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity("history")
 data class HistoryEntity(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey(autoGenerate = false)
     val date : String,
 )

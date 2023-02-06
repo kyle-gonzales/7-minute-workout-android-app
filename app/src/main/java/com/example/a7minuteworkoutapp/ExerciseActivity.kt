@@ -25,14 +25,14 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
     // rest timer
     private var restTimer: CountDownTimer? = null
-    private var restDuration: Long = 10000
+    private var restDuration: Long = 1000
     private var restPauseOffset: Long = 0
     private var restProgress = (restDuration/1000).toInt()
     private var restMaxProgress = (restDuration/1000).toInt()
 
     //exercise timer
     private var exerciseTimer: CountDownTimer? = null
-    private var exerciseDuration: Long = 30000
+    private var exerciseDuration: Long = 1000
     private var exercisePauseOffset : Long = 0
     private var exerciseProgress = (exerciseDuration/1000).toInt()
     private var exerciseMaxProgress = (exerciseDuration/1000).toInt()
